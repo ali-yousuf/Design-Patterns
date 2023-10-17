@@ -308,3 +308,187 @@ void fetchAndDisplayWeather(WeatherService weatherService, String location) asyn
 ```
 
 Now, you can use the `fetchAndDisplayWeather` function with any weather service provider (Service A, Service B, or the adapted Service C) without needing to change the client code. The Adapter Pattern allows you to integrate third-party components with varying interfaces into your Flutter project and maintain a consistent interface for working with them.
+
+# Observer Pattern
+Observer is a behavioral design pattern that lets you define a
+subscription mechanism to notify multiple objects about any
+events that happen to the object they’re observing.
+
+**Where observer pattern used in our project?**
+
+The observer Pattern is used extensively for managing state and data flow, handling asynchronous operations, and updating the UI in response to changes in the application's data. You can implement the Observer Pattern using tools like Streams, Providers, InheritedWidgets, or custom state management solutions to achieve efficient and reactive Flutter applications.
+
+# State Pattern
+State is a behavioral design pattern that lets an object alter its
+behavior when its internal state changes. It appears as if the
+object changed its class.
+
+# Example
+Here's a simplified real-life example of the State Design Pattern in the context of a traffic signal system:
+
+**Scenario**: You are tasked with modeling a traffic signal system in a software application. The traffic signal can have three states: "Red," "Yellow," and "Green." Each state corresponds to a different color and duration.
+
+**Implementation**:
+
+1. **Define the State Interface**:
+   Create a state interface that declares the methods common to all traffic signal states.
+
+```dart
+abstract class TrafficSignalState {
+  void displaySignal();
+}
+```
+
+2. **Implement Concrete States**:
+   Implement concrete state classes for each of the traffic signal states: "Red," "Yellow," and "Green."
+
+```dart
+class RedSignal implements TrafficSignalState {
+  @override
+  void displaySignal() {
+    print("Displaying RED signal. Stop!");
+  }
+}
+
+class YellowSignal implements TrafficSignalState {
+  @override
+  void displaySignal() {
+    print("Displaying YELLOW signal. Prepare to stop.");
+  }
+}
+
+class GreenSignal implements TrafficSignalState {
+  @override
+  void displaySignal() {
+    print("Displaying GREEN signal. Go!");
+  }
+}
+```
+
+3. **Create the TrafficSignal Context**:
+   Create a context class, `TrafficSignal`, which maintains a reference to the current state and delegates operations to the state.
+
+```dart
+class TrafficSignal {
+  TrafficSignalState _currentState;
+
+  TrafficSignal(this._currentState);
+
+  void setState(TrafficSignalState newState) {
+    _currentState = newState;
+  }
+
+  void displaySignal() {
+    _currentState.displaySignal();
+  }
+}
+```
+
+4. **Client Code**:
+   Use the `TrafficSignal` class to model the behavior of the traffic signal system.
+
+```dart
+void main() {
+  final trafficSignal = TrafficSignal(RedSignal());
+
+  trafficSignal.displaySignal(); // Displaying RED signal. Stop!
+
+  trafficSignal.setState(YellowSignal());
+  trafficSignal.displaySignal(); // Displaying YELLOW signal. Prepare to stop!
+
+  trafficSignal.setState(GreenSignal());
+  trafficSignal.displaySignal(); // Displaying GREEN signal. Go!
+}
+```
+
+In this example, the State Design Pattern is applied to model the behavior of a traffic signal system. The `TrafficSignal` class maintains a reference to the current state and delegates the display of signals to the current state object. You can switch between different traffic signal states without modifying the context class, promoting flexibility and maintainability. This example demonstrates how the State Pattern can be used to manage state-specific behavior in a software application.
+
+# Strategy Pattern
+Strategy is a behavioral design pattern that lets you define a
+family of algorithms, put each of them into a separate class,
+and make their objects interchangeable.
+
+# Example
+A real-life example of the Strategy Design Pattern can be found in a payment processing system for an e-commerce platform. The system needs to handle different payment methods (e.g., credit card, PayPal, and cryptocurrency) interchangeably and allow users to choose their preferred payment method at runtime.
+
+**Implementation**:
+
+1. **Define the PaymentStrategy interface**:
+
+```dart
+abstract class PaymentStrategy {
+  void pay(double amount);
+}
+```
+
+2. **Implement concrete payment strategy classes**:
+
+Create concrete strategy classes for different payment methods that implement the `PaymentStrategy` interface.
+
+```dart
+class CreditCardPayment implements PaymentStrategy {
+  @override
+  void pay(double amount) {
+    print("Paid $amount using Credit Card.");
+  }
+}
+
+class PayPalPayment implements PaymentStrategy {
+  @override
+  void pay(double amount) {
+    print("Paid $amount using PayPal.");
+  }
+}
+
+class CryptocurrencyPayment implements PaymentStrategy {
+  @override
+  void pay(double amount) {
+    print("Paid $amount using Cryptocurrency.");
+  }
+}
+```
+
+3. **Create the PaymentContext class**:
+
+The `PaymentContext` class maintains a reference to the selected payment strategy and uses it to process payments.
+
+```dart
+class PaymentContext {
+  PaymentStrategy _strategy;
+
+  void setPaymentStrategy(PaymentStrategy strategy) {
+    _strategy = strategy;
+  }
+
+  void processPayment(double amount) {
+    _strategy.pay(amount);
+  }
+}
+```
+
+4. **Client Code**:
+
+In your e-commerce application, you can use the Strategy Pattern to allow customers to choose their preferred payment method at runtime and process payments.
+
+```dart
+void main() {
+  final paymentContext = PaymentContext();
+
+  final creditCardPayment = CreditCardPayment();
+  final payPalPayment = PayPalPayment();
+  final cryptocurrencyPayment = CryptocurrencyPayment();
+
+  paymentContext.setPaymentStrategy(creditCardPayment);
+  paymentContext.processPayment(100.0); // Paid 100.0 using Credit Card.
+
+  paymentContext.setPaymentStrategy(payPalPayment);
+  paymentContext.processPayment(50.0); // Paid 50.0 using PayPal.
+
+  paymentContext.setPaymentStrategy(cryptocurrencyPayment);
+  paymentContext.processPayment(200.0); // Paid 200.0 using Cryptocurrency.
+}
+```
+
+In this example, the Strategy Pattern allows you to interchangeably use different payment methods without modifying the payment processing code. The `PaymentContext` class maintains a reference to the selected payment strategy and delegates the payment processing to the chosen strategy. This flexibility and interchangeability make the Strategy Pattern useful for handling various payment methods in an e-commerce application.
+
+
